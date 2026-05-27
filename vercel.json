@@ -1,0 +1,7 @@
+{
+  "github": {
+    "silent": true
+  },
+  "buildCommand": "npx prisma generate && npm run build",
+  "outputDirectory": ".next"
+}

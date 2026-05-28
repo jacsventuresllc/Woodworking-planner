@@ -9,7 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@prisma/client": "^5.22.0",
     "@stripe/stripe-js": "^9.6.0",
     "aws-sdk": "^2.1693.0",
     "lucide-react": "^1.16.0",
@@ -21,6 +20,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@prisma/client": "^5.22.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

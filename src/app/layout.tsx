@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
+import { Inter, Playfair_Display, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { Providers } from "@/components/providers/SessionProvider";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
+const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains" });
 
 export const metadata: Metadata = {
   title: "WoodCraft AI - AI-Powered Woodworking Project Planner",
@@ -16,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
-      <body className="min-h-full flex flex-col bg-background">
+      <body className={`${inter.variable} ${playfair.variable} ${jetbrains.variable} min-h-full flex flex-col bg-background font-sans`}>
         <Providers>
           <Navbar />
           <main className="flex-1">{children}</main>

@@ -5,6 +5,5 @@
   "buildCommand": "npm install && npx prisma generate && npx next build",
   "outputDirectory": ".next",
   "installCommand": "npm install",
-  "framework": "nextjs",
-  "dartSass": false
+  "framework": "nextjs"
 }

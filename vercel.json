@@ -2,8 +2,7 @@
   "github": {
     "silent": true
   },
-  "buildCommand": "npm install && npx prisma generate && npx next build",
+  "buildCommand": "npm install prisma@5.22.0 @prisma/client@5.22.0 --save-dev && npx prisma@5.22.0 generate && npx next build",
   "outputDirectory": ".next",
-  "installCommand": "npm install",
-  "framework": "nextjs"
+  "installCommand": "npm install"
 }

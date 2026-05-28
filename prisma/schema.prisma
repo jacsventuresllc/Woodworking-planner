@@ -7,7 +7,7 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String    @id @default(uuid()) @db.Uuid
   email         String    @unique
   name          String?
   image         String?
@@ -18,18 +18,18 @@ model User {
 }
 
 model Project {
-  id            String    @id @default(cuid())
-  userId        String
-  user          User      @relation(fields: [userId], references: [id])
+  id            String    @id @default(uuid()) @db.Uuid
+  userId        String    @db.Uuid
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   name          String
   imageUrl      String?
   status        String    @default("draft") // draft, complete
   
   // JSON fields for AI-generated content
-  components    String?   // JSON array of detected components
-  bom           String?   // JSON array of BOM items
-  cutList       String?   // JSON array of cut list items
-  instructions  String?   // JSON array of assembly steps
+  components    Json?
+  bom           Json?
+  cutList       Json?
+  instructions  Json?
   
   // Settings
   skillLevel    String    @default("beginner") // beginner, intermediate
@@ -37,4 +37,7 @@ model Project {
   
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([status])
 }

@@ -8,21 +8,35 @@ export default function SignInPage() {
   const [email, setEmail] = useState("demo@woodcraft.ai");
   const [name, setName] = useState("Demo User");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
 
-    const result = await signIn("credentials", {
-      email,
-      name,
-      redirect: false,
-    });
+    try {
+      const result = await signIn("credentials", {
+        email,
+        name,
+        redirect: false,
+      });
 
-    if (result?.ok) {
-      router.push("/dashboard");
-    } else {
+      console.log("SignIn result:", result);
+
+      if (result?.error) {
+        setError(`Error: ${result.error}`);
+        setLoading(false);
+      } else if (result?.ok) {
+        router.push("/dashboard");
+      } else {
+        setError("Sign in failed. Please try again.");
+        setLoading(false);
+      }
+    } catch (err: any) {
+      console.error("SignIn exception:", err);
+      setError(`Exception: ${err.message}`);
       setLoading(false);
     }
   };
@@ -34,6 +48,12 @@ export default function SignInPage() {
           <h1 className="text-3xl font-heading text-primary mb-2">WoodCraft AI</h1>
           <p className="text-muted-foreground">Sign in to start planning</p>
         </div>
+
+        {error && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

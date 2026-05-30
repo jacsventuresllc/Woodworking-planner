@@ -1,10 +1,11 @@
-"use client";
+'use client';
 
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Plus, FileText, Trash2, Edit, LogOut, Loader2 } from "lucide-react";
+import { Plus, FileText, Trash2, Edit, LogOut, Loader2, MessageSquare } from "lucide-react";
+import ChatInterface from "@/components/ChatInterface";
 
 interface Project {
   id: string;
@@ -19,6 +20,7 @@ export default function DashboardPage() {
   const router = useRouter();
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -47,6 +49,30 @@ export default function DashboardPage() {
 
   const completedCount = projects.filter((p) => p.status === "complete").length;
 
+  // Show chat interface if toggled
+  if (showChat) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="max-w-4xl mx-auto px-4 py-6">
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="font-heading text-2xl font-bold text-gray-900">
+              Bookshelf Designer
+            </h1>
+            <button
+              onClick={() => setShowChat(false)}
+              className="text-gray-600 hover:text-gray-900"
+            >
+              ← Back to Dashboard
+            </button>
+          </div>
+          <div className="bg-surface rounded-card shadow-card h-[calc(100vh-140px)]">
+            <ChatInterface />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (status === "loading" || loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -69,13 +95,13 @@ export default function DashboardPage() {
             </p>
           </div>
           <div className="flex gap-3">
-            <Link
-              href="/project/new"
+            <button
+              onClick={() => setShowChat(true)}
               className="bg-accent hover:bg-accent-dark text-white font-medium px-4 py-2 rounded-button flex items-center gap-2 transition-colors"
             >
-              <Plus size={18} />
-              New Project
-            </Link>
+              <MessageSquare size={18} />
+              New Bookshelf
+            </button>
             <button
               onClick={() => signOut({ callbackUrl: "/" })}
               className="bg-surface hover:bg-gray-100 text-gray-700 font-medium px-4 py-2 rounded-button flex items-center gap-2 transition-colors"
@@ -126,15 +152,16 @@ export default function DashboardPage() {
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* New Project Card */}
-          <Link
-            href="/project/new"
-            className="bg-surface rounded-card shadow-card p-6 border-2 border-dashed border-gray-200 hover:border-primary hover:bg-primary/5 transition-colors group"
+          <button
+            onClick={() => setShowChat(true)}
+            className="bg-surface rounded-card shadow-card p-6 border-2 border-dashed border-gray-200 hover:border-primary hover:bg-primary/5 transition-colors group text-left"
           >
             <div className="h-40 flex flex-col items-center justify-center text-gray-400 group-hover:text-primary transition-colors">
-              <Plus size={48} />
-              <p className="mt-2 font-medium">Start New Project</p>
+              <MessageSquare size={48} />
+              <p className="mt-2 font-medium">Design a Bookshelf</p>
+              <p className="text-sm text-gray-400 mt-1">AI-powered conversation</p>
             </div>
-          </Link>
+          </button>
 
           {/* Project Cards */}
           {projects.map((project) => (
